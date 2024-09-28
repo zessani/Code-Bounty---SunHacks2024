@@ -1,4 +1,4 @@
-"use client"; // Add this line
+"use client"; // Add this line to ensure it's rendered on the client side
 
 import { useState } from "react";
 
@@ -13,17 +13,20 @@ export default function Login() {
   const [isOtpSent, setIsOtpSent] = useState(false);
 
   const handleLogin = () => {
-    alert(`Logging in with username: ${username} and password: ${password}`);
-    // Here you can implement the actual login functionality
-  };
-
-  const handleGoogleLogin = () => {
-    alert("Logging in with Google");
-    // Implement Google Login API integration
+    if (!username || !password) {
+      alert("Please fill in both username and password.");
+      return;
+    }
+    // TODO: Implement the actual login functionality
+    alert(`Logging in with username: ${username}`);
   };
 
   const handleForgotPassword = () => {
-    // Send OTP to email
+    if (!emailForReset) {
+      alert("Please enter your email.");
+      return;
+    }
+    // TODO: Send OTP to email
     alert(`Sending OTP to ${emailForReset}`);
     setIsOtpSent(true);
   };
@@ -31,15 +34,19 @@ export default function Login() {
   const handleResetPassword = () => {
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match!");
-    } else {
-      alert("Password reset successfully");
-      // Call API to reset the password with OTP
+      return;
     }
+    if (!otp) {
+      alert("Please enter the OTP.");
+      return;
+    }
+    // TODO: Call API to reset the password with OTP
+    alert("Password reset successfully");
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-red-100">
-      <div className="bg-black p-8 rounded-lg shadow-lg w-96">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         {!isForgotPassword ? (
           <>
             <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
@@ -62,12 +69,6 @@ export default function Login() {
               onClick={handleLogin}
             >
               Login
-            </button>
-            <button
-              className="bg-red-500 w-full text-white py-2 rounded-md hover:bg-red-600 transition-colors mb-4"
-              onClick={handleGoogleLogin}
-            >
-              Login with Google
             </button>
             <p
               className="text-sm text-blue-500 cursor-pointer text-center"
