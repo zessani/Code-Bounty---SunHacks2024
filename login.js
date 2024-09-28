@@ -1,115 +1,139 @@
-import { useState } from "react";
-import Image from "next/image";
+"use client"; // Add this line
 
-export default function Home() {
+import { useState } from "react";
+
+export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [emailForReset, setEmailForReset] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [isOtpSent, setIsOtpSent] = useState(false);
 
   const handleLogin = () => {
     alert(`Logging in with username: ${username} and password: ${password}`);
-    // Here you would typically call your login API
+    // Here you can implement the actual login functionality
   };
 
-  const handleRegister = () => {
-    alert(`Registering with username: ${username} and password: ${password}`);
-    // Here you would typically call your register API
+  const handleGoogleLogin = () => {
+    alert("Logging in with Google");
+    // Implement Google Login API integration
+  };
+
+  const handleForgotPassword = () => {
+    // Send OTP to email
+    alert(`Sending OTP to ${emailForReset}`);
+    setIsOtpSent(true);
+  };
+
+  const handleResetPassword = () => {
+    if (newPassword !== confirmPassword) {
+      alert("Passwords do not match!");
+    } else {
+      alert("Password reset successfully");
+      // Call API to reset the password with OTP
+    }
   };
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-
-        <div className="flex flex-col gap-4 items-center">
-          <h2 className="text-lg font-semibold">Login / Register</h2>
-
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="border px-4 py-2 rounded-md w-64"
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border px-4 py-2 rounded-md w-64"
-          />
-
-          <div className="flex gap-4 mt-4">
+    <div className="flex items-center justify-center min-h-screen bg-red-100">
+      <div className="bg-black p-8 rounded-lg shadow-lg w-96">
+        {!isForgotPassword ? (
+          <>
+            <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+            <input
+              type="text"
+              placeholder="Username / Email"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="border w-full px-4 py-2 mb-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border w-full px-4 py-2 mb-6 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
             <button
-              className="rounded-full bg-blue-500 text-white px-4 py-2"
+              className="bg-blue-500 w-full text-white py-2 rounded-md hover:bg-blue-600 transition-colors mb-4"
               onClick={handleLogin}
             >
               Login
             </button>
             <button
-              className="rounded-full bg-green-500 text-white px-4 py-2"
-              onClick={handleRegister}
+              className="bg-red-500 w-full text-white py-2 rounded-md hover:bg-red-600 transition-colors mb-4"
+              onClick={handleGoogleLogin}
             >
-              Register
+              Login with Google
             </button>
-          </div>
-        </div>
-      </main>
-
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <p
+              className="text-sm text-blue-500 cursor-pointer text-center"
+              onClick={() => setIsForgotPassword(true)}
+            >
+              Forgot Password?
+            </p>
+          </>
+        ) : (
+          <>
+            {!isOtpSent ? (
+              <>
+                <h1 className="text-2xl font-bold mb-6 text-center">
+                  Forgot Password
+                </h1>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={emailForReset}
+                  onChange={(e) => setEmailForReset(e.target.value)}
+                  className="border w-full px-4 py-2 mb-6 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  className="bg-blue-500 w-full text-white py-2 rounded-md hover:bg-blue-600 transition-colors mb-4"
+                  onClick={handleForgotPassword}
+                >
+                  Send
+                </button>
+              </>
+            ) : (
+              <>
+                <h1 className="text-2xl font-bold mb-6 text-center">
+                  Reset Password
+                </h1>
+                <input
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  className="border w-full px-4 py-2 mb-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <input
+                  type="password"
+                  placeholder="New Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="border w-full px-4 py-2 mb-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm New Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="border w-full px-4 py-2 mb-6 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  className="bg-blue-500 w-full text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
+                  onClick={handleResetPassword}
+                >
+                  Reset Password
+                </button>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
