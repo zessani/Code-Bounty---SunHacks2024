@@ -1,8 +1,6 @@
 import React from 'react';
 import { ClerkProvider, GoogleOneTap } from '@clerk/nextjs';
-import localFont from 'next/font/local';
 import './globals.css';
-
 
 // Metadata
 export const metadata = {
@@ -17,7 +15,7 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className="antialiased">
         <ClerkProvider>
           {/* Google One Tap */}
           <GoogleOneTap />
